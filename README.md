@@ -1,1 +1,1 @@
-# comparison-of-algorithms-by-recurrence-relation
+# Comparison Of Algorithms By Recurrence Relation
