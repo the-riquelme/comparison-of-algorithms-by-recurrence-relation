@@ -1,5 +1,10 @@
 package src;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Ordination {
 
   // * Merge Sort
@@ -76,27 +81,41 @@ public class Ordination {
 
   // * Inserction Sort
 
-  public static int[] inserctionSort(int[] data) {
+  public static Map<String, String>  inserctionSort(int[] data) {
     if (data == null || data.length <= 0) return null;
 
-    int indexStart = 0;
-    inserctionSort(data, indexStart);
+    Map<String, String> result = new HashMap<String, String>();
+    result.put("Disordered Vector", Arrays.toString(data));
 
-    return data;
+    int indexStart = 0;
+    int[] deductions = inserctionSort(data, indexStart, 0, 0);
+
+    result.put("Number Of Exchanges", Integer.toString(deductions[0]));
+    result.put("Number Of Comparisons", Integer.toString(deductions[1]));
+    result.put("Ordered Vector", Arrays.toString(data));
+
+    return result;
   }
 
-  private static void inserctionSort(int[] data, int indexStart) {
-    if(indexStart == data.length) return;
+  private static int[] inserctionSort(int[] data, int indexStart, int numberOfExchanges, int numberOfComparisons) {
+    if(indexStart == data.length) {
+      int[] result = new int[2];
+      result[0] = numberOfExchanges;
+      result[1] = numberOfComparisons;
+      return result;
+    }
         
-    for(int c = indexStart; c > 0; c--){
-        if(data[c-1] > data[c]){
-            int aux = data[c-1];
-            data[c-1] = data[c];
-            data[c] = aux;
-        }
+    for(int index = indexStart; index > 0; index--){
+      numberOfComparisons++;
+      if(data[index - 1] > data[index]){
+          int auxiliary = data[index - 1];
+          data[index - 1] = data[index];
+          data[index] = auxiliary;
+          numberOfExchanges++;
+      }
     }
 
-    inserctionSort(data, ++indexStart);
+    return inserctionSort(data, ++indexStart, numberOfExchanges, numberOfComparisons);
   }
 
 } 
