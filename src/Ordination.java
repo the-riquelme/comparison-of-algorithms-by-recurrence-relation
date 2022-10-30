@@ -1,6 +1,5 @@
 package src;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,36 +8,49 @@ public class Ordination {
 
   // * Merge Sort
 
-  public static int[] mergeSort(int[] data) {
+  public static Map<String, String> mergeSort(int[] data) {
     if (data == null || data.length <= 0) return null;
+
+    Map<String, String> result = new HashMap<String, String>();
+    result.put("Disordered Vector", Arrays.toString(data));
 
     int indexStart = 0;
     int endIndex = data.length - 1;
 
-    sort(data, indexStart, endIndex);
+    double[] deductions = sort(data, indexStart, endIndex);
 
-    return data;
+    result.put("Number Of Exchanges", Double.toString(deductions[0]));
+    result.put("Number Of Comparisons", Double.toString(deductions[1]));
+    result.put("Ordered Vector", Arrays.toString(data));
+
+    return result;
   }
 
-  private static void sort(int[] data, int indexStart, int endIndex) {
+  private static double[] sort(int[] data, int indexStart, int endIndex) {
+    double[] result = new double[2];
 
 		// Condicional que verifica a validade dos parâmetros passados.
 		if (data != null && indexStart < endIndex && indexStart >= 0 &&
 		 endIndex < data.length && data.length != 0) {
 			int middle = ((endIndex + indexStart) / 2);
 
-			sort(data, indexStart, middle);
-			sort(data, middle + 1, endIndex);
+			double[] resultAux = sort(data, indexStart, middle);
+      result[0] = result[0] + resultAux[0];
+      result[1] = result[1] + resultAux[1];
 
-			merge(data, indexStart, middle, endIndex);
+			resultAux = sort(data, middle + 1, endIndex);
+      result[0] = result[0] + resultAux[0];
+      result[1] = result[1] + resultAux[1];
+
+			resultAux = merge(data, indexStart, middle, endIndex, 0, 0);
+      result[0] = result[0] + resultAux[0];
+      result[1] = result[1] + resultAux[1];
 		}
+
+    return result;
 	}
 
-  /**
-    * O merge consiste na junção de duas listas já ordenadas.
-    * Usa um array auxiliar.
-  */
-	private static void merge(int[] data, int indexStart, int middle, int endIndex) {
+	private static double[] merge(int[] data, int indexStart, int middle, int endIndex, double numberOfExchanges, int numberOfComparisons) {
 
 		int[] auxiliary = new int[data.length];
     
@@ -62,6 +74,8 @@ public class Ordination {
 				j++;
 			}
 			k++;
+      numberOfExchanges += 0.5;
+      numberOfComparisons++;
 		}
 
 		//Append de itens que não foram usados na Junção
@@ -69,6 +83,8 @@ public class Ordination {
 			data[k] = auxiliary[i];
 			i++;
 			k++;
+      numberOfExchanges += 0.5;
+      numberOfComparisons++;
 		}
 
 		//Append de itens que não foram usados na Junção
@@ -76,19 +92,26 @@ public class Ordination {
 			data[k] = auxiliary[j];
 			j++;
 			k++;
+      numberOfExchanges += 0.5;
+      numberOfComparisons++;
 		}
+
+    double[] result = new double[2];
+    result[0] = numberOfExchanges;
+    result[1] = numberOfComparisons;
+    return result;
 	}
 
   // * Inserction Sort
 
-  public static Map<String, String>  inserctionSort(int[] data) {
+  public static Map<String, String>  insertionSort(int[] data) {
     if (data == null || data.length <= 0) return null;
 
     Map<String, String> result = new HashMap<String, String>();
     result.put("Disordered Vector", Arrays.toString(data));
 
     int indexStart = 0;
-    int[] deductions = inserctionSort(data, indexStart, 0, 0);
+    int[] deductions = insertionSort(data, indexStart, 0, 0);
 
     result.put("Number Of Exchanges", Integer.toString(deductions[0]));
     result.put("Number Of Comparisons", Integer.toString(deductions[1]));
@@ -97,7 +120,7 @@ public class Ordination {
     return result;
   }
 
-  private static int[] inserctionSort(int[] data, int indexStart, int numberOfExchanges, int numberOfComparisons) {
+  private static int[] insertionSort(int[] data, int indexStart, int numberOfExchanges, int numberOfComparisons) {
     if(indexStart == data.length) {
       int[] result = new int[2];
       result[0] = numberOfExchanges;
@@ -115,7 +138,7 @@ public class Ordination {
       }
     }
 
-    return inserctionSort(data, ++indexStart, numberOfExchanges, numberOfComparisons);
+    return insertionSort(data, ++indexStart, numberOfExchanges, numberOfComparisons);
   }
 
 } 
