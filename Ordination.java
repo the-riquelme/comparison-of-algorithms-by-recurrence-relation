@@ -1,6 +1,5 @@
-package src;
 
-import java.util.Arrays;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,16 +11,25 @@ public class Ordination {
     if (data == null || data.length <= 0) return null;
 
     Map<String, String> result = new HashMap<String, String>();
-    result.put("Disordered Vector", Arrays.toString(data));
+    // result.put("Disordered Vector", Arrays.toString(data));
 
     int indexStart = 0;
     int endIndex = data.length - 1;
 
+    double start = System.nanoTime();
     double[] deductions = sort(data, indexStart, endIndex);
+    double elapsedNano = System.nanoTime() - start;
+    double elapsedMilli = (elapsedNano / 1000000);
+    double elapsedSeg = (elapsedMilli / 1000);
 
     result.put("Number Of Exchanges", Double.toString(deductions[0]));
     result.put("Number Of Comparisons", Double.toString(deductions[1]));
-    result.put("Ordered Vector", Arrays.toString(data));
+    // result.put("Ordered Vector", Arrays.toString(data));
+    result.put("Time Spent",
+     "Nanoseconds: " + elapsedNano
+     + " - Milliseconds: " + elapsedMilli
+     + " - Seconds: " + elapsedSeg
+     );
 
     return result;
   }
@@ -108,14 +116,23 @@ public class Ordination {
     if (data == null || data.length <= 0) return null;
 
     Map<String, String> result = new HashMap<String, String>();
-    result.put("Disordered Vector", Arrays.toString(data));
+    // result.put("Disordered Vector", Arrays.toString(data));
 
     int indexStart = 0;
+    double start = System.nanoTime();
     int[] deductions = insertionSort(data, indexStart, 0, 0);
+    double elapsedNano = System.nanoTime() - start;
+    double elapsedMilli = (elapsedNano / 1000000);
+    double elapsedSeg = (elapsedMilli / 1000);
 
     result.put("Number Of Exchanges", Integer.toString(deductions[0]));
     result.put("Number Of Comparisons", Integer.toString(deductions[1]));
-    result.put("Ordered Vector", Arrays.toString(data));
+    // result.put("Ordered Vector", Arrays.toString(data));
+    result.put("Time Spent",
+     "Nanoseconds: " + elapsedNano
+     + " - Milliseconds: " + elapsedMilli
+     + " - Seconds: " + elapsedSeg
+     );
 
     return result;
   }
@@ -127,7 +144,7 @@ public class Ordination {
       result[1] = numberOfComparisons;
       return result;
     }
-        
+  
     for(int index = indexStart; index > 0; index--){
       numberOfComparisons++;
       if(data[index - 1] > data[index]){
