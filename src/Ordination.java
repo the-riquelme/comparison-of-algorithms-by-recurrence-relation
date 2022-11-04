@@ -1,6 +1,5 @@
 package src;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,6 +72,8 @@ public class Ordination {
 		int j = middle + 1;
 		int k = indexStart;
 
+    if (i > middle || j > endIndex) numberOfComparisons++;
+    
 		//Junção das listas ordenadas
 		while (i <= middle && j <= endIndex) {
 			if (auxiliary[i] < auxiliary[j]) {
@@ -87,6 +88,8 @@ public class Ordination {
       numberOfComparisons++;
 		}
 
+    if (i > middle) numberOfComparisons++;
+
 		//Append de itens que não foram usados na Junção
 		while (i <= middle) {
 			data[k] = auxiliary[i];
@@ -95,6 +98,8 @@ public class Ordination {
       numberOfExchanges += 0.5;
       numberOfComparisons++;
 		}
+
+    if (j > endIndex) numberOfComparisons++;
 
 		//Append de itens que não foram usados na Junção
 		while (j <= endIndex) {
